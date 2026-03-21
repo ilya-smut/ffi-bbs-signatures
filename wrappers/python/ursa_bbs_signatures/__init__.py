@@ -6,6 +6,7 @@ from .models.CreateProofRequest import CreateProofRequest
 from .models.IndexedMessage import IndexedMessage
 from .models.ProofMessage import ProofMessage, ProofMessageType
 from .models.SignRequest import SignRequest
+from .models.SignatureProofStatus import SignatureProofStatus
 from .models.UnblindSignatureRequest import UnblindSignatureRequest
 from .models.VerifyBlindedCommitmentRequest import VerifyBlindedCommitmentRequest
 from .models.VerifyProofRequest import VerifyProofRequest
@@ -14,8 +15,6 @@ from .models.VerifyRequest import VerifyRequest
 from .models.keys.BlsKeyPair import BlsKeyPair
 from .models.keys.BbsKey import BbsKey
 from .models.keys.BlindedBlsKeyPair import BlindedBlsKeyPair
-
-from ._ffi import FfiException
 
 from .api import (
     sign,
@@ -31,7 +30,6 @@ from .api import (
 
 __all__ = [
     BbsException,
-    FfiException,
     BlindSignRequest,
     BlindedCommitment,
     CreateBlindedCommitmentRequest,
@@ -40,6 +38,7 @@ __all__ = [
     ProofMessage,
     ProofMessageType,
     SignRequest,
+    SignatureProofStatus,
     UnblindSignatureRequest,
     VerifyBlindedCommitmentRequest,
     VerifyProofRequest,

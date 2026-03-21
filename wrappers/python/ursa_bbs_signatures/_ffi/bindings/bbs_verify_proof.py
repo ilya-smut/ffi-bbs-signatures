@@ -115,7 +115,7 @@ def bbs_verify_proof_context_set_nonce_prehashed(handle: int, nonce: bytes) -> N
 
 def bbs_get_total_messages_count_for_proof(proof: bytes) -> int:
     func = wrap_native_func(
-        "bbs_get_total_messages_count_for_proof", arg_types=[FfiByteBuffer]
+        "bbs_get_total_messages_count_for_proof", arg_types=[FfiByteBuffer], return_type=c_int32
     )
     return func(encode_bytes(proof))
 

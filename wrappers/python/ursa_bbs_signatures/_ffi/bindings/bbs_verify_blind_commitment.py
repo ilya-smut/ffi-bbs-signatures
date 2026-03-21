@@ -19,7 +19,7 @@ def bbs_verify_blind_commitment_context_init() -> int:
         return_type=c_uint64,
     )
     err = ExternError()
-    handle = func(err)
+    handle = func(byref(err))
     err.throw_on_error()
     return handle
 
@@ -30,19 +30,19 @@ def bbs_verify_blind_commitment_context_add_blinded(handle: int, index: int) -> 
         arg_types=[c_uint64, c_uint32, POINTER(ExternError)],
     )
     err = ExternError()
-    func(handle, index, err)
+    func(handle, index, byref(err))
     err.throw_on_error()
 
 
 def bbs_verify_blind_commitment_context_set_public_key(
-    handle: int, public_key: FfiByteBuffer
+    handle: int, public_key: bytes
 ) -> None:
     func = wrap_native_func(
         "bbs_verify_blind_commitment_context_set_public_key",
         arg_types=[c_uint64, FfiByteBuffer, POINTER(ExternError)],
     )
     err = ExternError()
-    func(handle, public_key, err)
+    func(handle, encode_bytes(public_key), byref(err))
     err.throw_on_error()
 
 
@@ -54,7 +54,7 @@ def bbs_verify_blind_commitment_context_set_nonce_string(
         arg_types=[c_uint64, c_char_p, POINTER(ExternError)],
     )
     err = ExternError()
-    func(handle, nonce, err)
+    func(handle, encode_str(nonce), byref(err))
     err.throw_on_error()
 
 
@@ -66,7 +66,7 @@ def bbs_verify_blind_commitment_context_set_nonce_bytes(
         arg_types=[c_uint64, FfiByteBuffer, POINTER(ExternError)],
     )
     err = ExternError()
-    func(handle, encode_bytes(nonce), err)
+    func(handle, encode_bytes(nonce), byref(err))
     err.throw_on_error()
 
 
@@ -78,7 +78,7 @@ def bbs_verify_blind_commitment_context_set_nonce_prehashed(
         arg_types=[c_uint64, FfiByteBuffer, POINTER(ExternError)],
     )
     err = ExternError()
-    func(handle, encode_bytes(nonce), err)
+    func(handle, encode_bytes(nonce), byref(err))
     err.throw_on_error()
 
 
@@ -90,7 +90,7 @@ def bbs_verify_blind_commitment_context_set_proof(
         arg_types=[c_uint64, FfiByteBuffer, POINTER(ExternError)],
     )
     err = ExternError()
-    func(handle, encode_bytes(proof), err)
+    func(handle, encode_bytes(proof), byref(err))
     err.throw_on_error()
 
 
@@ -100,7 +100,7 @@ def bbs_verify_blind_commitment_context_finish(handle: int) -> int:
         arg_types=[c_uint64, POINTER(ExternError)],
     )
     err = ExternError()
-    result = func(handle, err)
+    result = func(handle, byref(err))
     err.throw_on_error()
     return result
 

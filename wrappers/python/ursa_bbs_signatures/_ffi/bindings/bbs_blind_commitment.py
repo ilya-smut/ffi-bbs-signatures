@@ -127,7 +127,7 @@ def bbs_blind_commitment_context_set_public_key(handle: int, value: bytes) -> No
 
 def bbs_blind_commitment_context_set_nonce_string(handle: int, value: str) -> None:
     func = wrap_native_func(
-        "bbs_blind_commitment_context_set_public_key",
+        "bbs_blind_commitment_context_set_nonce_string",
         arg_types=[c_uint64, c_char_p, POINTER(ExternError)],
     )
     err = ExternError()

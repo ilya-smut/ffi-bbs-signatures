@@ -33,17 +33,17 @@ def bbs_verify_context_add_message_string(handle: int, message: str) -> None:
         arg_types=[c_uint64, c_char_p, POINTER(ExternError)],
     )
     err = ExternError()
-    func(handle, encode_str(message), err)
+    func(handle, encode_str(message), byref(err))
     err.throw_on_error()
 
 
 def bbs_verify_context_add_message_bytes(handle: int, message: bytes) -> None:
     func = wrap_native_func(
-        "bbs_verify_context_add_message_string",
+        "bbs_verify_context_add_message_bytes",
         arg_types=[c_uint64, FfiByteBuffer, POINTER(ExternError)],
     )
     err = ExternError()
-    func(handle, encode_bytes(message), err)
+    func(handle, encode_bytes(message), byref(err))
     err.throw_on_error()
 
 
@@ -54,7 +54,7 @@ def bbs_verify_context_add_message_prehashed(handle: int, message: bytes) -> Non
         arg_types=[c_uint64, FfiByteBuffer, POINTER(ExternError)],
     )
     err = ExternError()
-    func(handle, encode_bytes(message), err)
+    func(handle, encode_bytes(message), byref(err))
     err.throw_on_error()
 
 
@@ -64,7 +64,7 @@ def bbs_verify_context_set_public_key(handle: int, public_key: bytes) -> None:
         arg_types=[c_uint64, FfiByteBuffer, POINTER(ExternError)],
     )
     err = ExternError()
-    func(handle, encode_bytes(public_key), err)
+    func(handle, encode_bytes(public_key), byref(err))
     err.throw_on_error()
 
 
@@ -74,7 +74,7 @@ def bbs_verify_context_set_signature(handle: int, signature: bytes) -> None:
         arg_types=[c_uint64, FfiByteBuffer, POINTER(ExternError)],
     )
     err = ExternError()
-    func(handle, encode_bytes(signature), err)
+    func(handle, encode_bytes(signature), byref(err))
     err.throw_on_error()
 
 
@@ -83,7 +83,7 @@ def bbs_verify_context_finish(handle: int) -> int:
         "bbs_verify_context_finish", arg_types=[c_uint64, POINTER(ExternError)]
     )
     err = ExternError()
-    result = func(handle, err)
+    result = func(handle, byref(err))
     err.throw_on_error()
     return result
 

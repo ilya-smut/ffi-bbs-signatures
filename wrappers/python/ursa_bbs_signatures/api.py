@@ -14,6 +14,7 @@ from .models.BlindedCommitment import BlindedCommitment
 from .models.CreateBlindedCommitmentRequest import CreateBlindedCommitmentRequest
 from .models.CreateProofRequest import CreateProofRequest
 from .models.SignRequest import SignRequest
+from .models.SignatureProofStatus import SignatureProofStatus
 from .models.UnblindSignatureRequest import UnblindSignatureRequest
 from .models.VerifyBlindedCommitmentRequest import VerifyBlindedCommitmentRequest
 from .models.VerifyProofRequest import VerifyProofRequest
@@ -130,7 +131,7 @@ def create_blinded_commitment(
 
 def verify_blinded_commitment(
         request: VerifyBlindedCommitmentRequest,
-) -> bool:
+) -> SignatureProofStatus:
     """Verifies a blinded commitment of messages
     Args:
         request: Request for the commitment verification
@@ -139,18 +140,18 @@ def verify_blinded_commitment(
     """
     handle = bbs_verify_blind_commitment.bbs_verify_blind_commitment_context_init()
 
-    bbs_verify_blind_commitment.bbs_verify_blind_commitment_context_set_nonce_bytes(request.nonce)
+    bbs_verify_blind_commitment.bbs_verify_blind_commitment_context_set_nonce_bytes(handle, request.nonce)
 
-    bbs_verify_blind_commitment.bbs_verify_blind_commitment_context_set_proof(request.proof)
+    bbs_verify_blind_commitment.bbs_verify_blind_commitment_context_set_proof(handle, request.proof)
 
-    bbs_verify_blind_commitment.bbs_verify_blind_commitment_context_set_public_key(request.public_key)
+    bbs_verify_blind_commitment.bbs_verify_blind_commitment_context_set_public_key(handle, request.public_key.public_key)
 
     for item in request.blinded_indices:
         bbs_verify_blind_commitment.bbs_verify_blind_commitment_context_add_blinded(handle, item.index)
 
     result = bbs_verify_blind_commitment.bbs_verify_blind_commitment_context_finish(handle)
 
-    return result == 0
+    return SignatureProofStatus(result)
 
 
 def create_proof(request: CreateProofRequest) -> bytes:
