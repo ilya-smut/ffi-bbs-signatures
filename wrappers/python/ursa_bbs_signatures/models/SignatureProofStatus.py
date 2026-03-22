@@ -11,7 +11,7 @@ class DocIntEnum(IntEnum):
 
 
 class SignatureProofStatus(DocIntEnum):
-    success = 200, "The proof is verified"
-    bad_signature = 400, "The proof failed because the signature proof of knowledge failed"
-    bad_hidden_signature = 401, "The proof failed because a hidden message was invalid when the proof was created"
-    bad_revealed_message = 402, "The proof failed because a revealed message was invalid"
+    success = 0, "The proof is verified"
+    bad_signature = 1, "The proof failed because the signature proof of knowledge failed"
+    bad_hidden_signature = 2, "The proof failed because a hidden message was invalid when the proof was created"
+    bad_revealed_message = 3, "The proof failed because a revealed message was invalid"

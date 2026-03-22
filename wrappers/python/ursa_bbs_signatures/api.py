@@ -149,9 +149,13 @@ def verify_blinded_commitment(
     for item in request.blinded_indices:
         bbs_verify_blind_commitment.bbs_verify_blind_commitment_context_add_blinded(handle, item.index)
 
-    result = bbs_verify_blind_commitment.bbs_verify_blind_commitment_context_finish(handle)
-
-    return SignatureProofStatus(result)
+    try:
+        result = bbs_verify_blind_commitment.bbs_verify_blind_commitment_context_finish(handle)
+        return SignatureProofStatus(result)
+    except Exception as e:
+        if "Bad hidden message in proof" in str(e):
+            return SignatureProofStatus.bad_hidden_signature
+        raise e
 
 
 def create_proof(request: CreateProofRequest) -> bytes:
