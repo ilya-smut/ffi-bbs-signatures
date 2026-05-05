@@ -1,5 +1,5 @@
 import sys
-from ctypes import POINTER, byref, c_char_p, c_ulong, c_uint64
+from ctypes import POINTER, byref, c_char_p, c_int32, c_ulong, c_uint64
 
 from ..ExternError import ExternError
 
