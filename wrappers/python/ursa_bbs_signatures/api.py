@@ -8,6 +8,8 @@ from ._ffi.bindings import (
     bbs_verify_blind_commitment
 )
 
+from ._ffi.FfiException import FfiException
+
 from .models.BbsException import BbsException
 from .models.BlindSignRequest import BlindSignRequest
 from .models.BlindedCommitment import BlindedCommitment
@@ -188,20 +190,23 @@ def verify_proof(request: VerifyProofRequest) -> bool:
     Return:
         True if verification was successful, False if not
     """
-    handle = bbs_verify_proof.bbs_verify_proof_context_init()
+    try:
+        handle = bbs_verify_proof.bbs_verify_proof_context_init()
 
-    bbs_verify_proof.bbs_verify_proof_context_set_public_key(handle, request.key.public_key)
+        bbs_verify_proof.bbs_verify_proof_context_set_public_key(handle, request.key.public_key)
 
-    bbs_verify_proof.bbs_verify_proof_context_set_nonce_bytes(handle, request.nonce)
+        bbs_verify_proof.bbs_verify_proof_context_set_nonce_bytes(handle, request.nonce)
 
-    bbs_verify_proof.bbs_verify_proof_context_set_proof(handle, request.proof)
+        bbs_verify_proof.bbs_verify_proof_context_set_proof(handle, request.proof)
 
-    for msg in request.messages:
-        bbs_verify_proof.bbs_verify_proof_context_add_message_string(handle, msg)
+        for msg in request.messages:
+            bbs_verify_proof.bbs_verify_proof_context_add_message_string(handle, msg)
 
-    result = bbs_verify_proof.bbs_verify_proof_context_finish(handle)
+        result = bbs_verify_proof.bbs_verify_proof_context_finish(handle)
 
-    return result == 0
+        return result == 0
+    except FfiException:
+        return False
 
 
 def get_total_message_count(proof: bytes) -> int:
